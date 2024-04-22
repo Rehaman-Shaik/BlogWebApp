@@ -10,3 +10,11 @@ app.listen(port,()=>{
 app.get("/", (req,res)=>{
     res.send("<h1>Blog web application</h1>")
 })
+
+app.get("/blogs", (req,res)=>{
+    res.send("<h1>Blogs</h1>")
+})
+
+app.get("/about", (req,res)=>{
+    res.send("<h1>About</h1>")
+})
