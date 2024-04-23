@@ -1,0 +1,7 @@
+<h1>All blogs</h1> <br>
+<% if (locals.list) { %>
+    <% list.forEach(item => { %>
+        <h3><%= item.title %></h3>
+        <p><%= item.description %></p>
+    <% }) %>
+<% } %>
