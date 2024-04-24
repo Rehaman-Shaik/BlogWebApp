@@ -66,6 +66,12 @@ app.get("/about", (req, res) => {
 })
 
 app.post("/blog", (req, res) => {
-    console.log(req.body)
-    res.send("<h1>About</h1>")
+    fs.readFile('blogs.json', 'utf8', (err, data) => {
+        const dataList = JSON.parse(data);
+        let index = req.body["id"] - 1
+        const dict = dataList[index]
+        res.render("blog.ejs",{
+            data:dict
+        })
+    });
 })
