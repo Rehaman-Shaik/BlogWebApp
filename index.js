@@ -21,17 +21,12 @@ app.get("/add_blog", (req, res) => {
 })
 
 app.post("/blog_submit", (req, res) => {
-    console.log(req.body)
     fs.readFile('blogs.json', 'utf8', (err, data) => {
-        if (err) {
-            console.error('Error reading the file:', err);
-            return;
-        }
         try {
-            // Parse JSON data
             const dataList = JSON.parse(data);
-
+            let len = dataList.length + 1
             const new_data = {
+                id: len,
                 title: req.body["title"],
                 description: req.body["description"]
             }
@@ -54,16 +49,8 @@ app.post("/blog_submit", (req, res) => {
 
 app.get("/blogs", (req, res) => {
     fs.readFile('blogs.json', 'utf8', (err, data) => {
-        if (err) {
-            console.error('Error reading the file:', err);
-            return;
-        }
         try {
-            // Parse JSON data
             const dataList = JSON.parse(data);
-
-            // Log the list of dictionaries
-            console.log(dataList);
             res.render("blogs.ejs", {
                 list: dataList
             })
@@ -75,5 +62,10 @@ app.get("/blogs", (req, res) => {
 })
 
 app.get("/about", (req, res) => {
+    res.send("<h1>About</h1>")
+})
+
+app.post("/blog", (req, res) => {
+    console.log(req.body)
     res.send("<h1>About</h1>")
 })
