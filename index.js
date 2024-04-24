@@ -62,7 +62,7 @@ app.get("/blogs", (req, res) => {
 })
 
 app.get("/about", (req, res) => {
-    res.send("<h1>About</h1>")
+    res.render("about.ejs")
 })
 
 app.post("/blog", (req, res) => {
