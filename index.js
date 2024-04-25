@@ -22,6 +22,7 @@ app.get("/add_blog", (req, res) => {
 
 app.post("/blog_submit", (req, res) => {
     fs.readFile('blogs.json', 'utf8', (err, data) => {
+        if (data.length != 0) {
         try {
             const dataList = JSON.parse(data);
             let len = dataList.length + 1
@@ -43,12 +44,34 @@ app.post("/blog_submit", (req, res) => {
 
         } catch (err) {
             console.error('Error parsing JSON:', err);
+        }}
+        else{
+            const dataList = []
+            const new_data = {
+                id: 1,
+                title: req.body["title"],
+                description: req.body["description"]
+            }
+            dataList.push(new_data)
+            const jsonData = JSON.stringify(dataList, null, 2);
+            fs.writeFile('blogs.json', jsonData, 'utf8', (err) => {
+                if (err) {
+                    console.error('Error writing to file:', err);
+                } else {
+                    console.log('Data written to file successfully!');
+                }
+            });
+            res.redirect("/")
         }
     });
 })
 
 app.get("/blogs", (req, res) => {
     fs.readFile('blogs.json', 'utf8', (err, data) => {
+        if (err) {
+            console.error('Error reading the file:', err);
+            return;
+        }
         try {
             const dataList = JSON.parse(data);
             res.render("blogs.ejs", {
@@ -70,8 +93,24 @@ app.post("/blog", (req, res) => {
         const dataList = JSON.parse(data);
         let index = req.body["id"] - 1
         const dict = dataList[index]
-        res.render("blog.ejs",{
-            data:dict
+        res.render("blog.ejs", {
+            data: dict
         })
     });
+})
+
+app.post("/delete_blog", (req, res) => {
+    fs.readFile('blogs.json', 'utf8', (err, data) => {
+        const dataList = JSON.parse(data);
+        let index = req.body["id"] - 1
+        dataList.splice(index, 1)
+        dataList.forEach((item, index) => {
+            item.id = index + 1;
+        });
+        const jsonData = JSON.stringify(dataList, null, 2);
+        fs.writeFile('blogs.json', jsonData, 'utf8', (err) => {
+            console.log('Data written to file successfully!');
+        });
+    });
+    res.redirect("/blogs")
 })
