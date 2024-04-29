@@ -19,11 +19,11 @@ async function readfile() {
 }
 
 
-async function writefile(dataList){
-    try{
-        const jsonData = JSON.stringify(dataList,null,2);
+async function writefile(dataList) {
+    try {
+        const jsonData = JSON.stringify(dataList, null, 2);
         await writeFile('blogs.json', jsonData, 'utf8');
-    } catch(err){
+    } catch (err) {
         console.log('Error writing to file:', err)
     }
 }
@@ -38,7 +38,7 @@ app.listen(port, () => {
     console.log(`Server Started on port ${port}`)
 })
 
-app.get("/", (req, res) => {
+app.get("/home", (req, res) => {
     res.render("index.ejs")
 })
 
@@ -107,7 +107,20 @@ app.post("/delete_blog", (req, res) => {
                 item.id = index + 1;
             });
             writefile(dataList);
-            
+
         })
     res.redirect("/blogs")
 })
+
+app.get("/", (req, res) => {
+    res.render("landing.ejs")
+})
+
+
+//app.get("/login", (req, res) => {
+//    res.render("login.ejs")
+//})
+//
+//app.get("/signup", (req, res) => {
+//    res.render("signup.ejs")
+//})
