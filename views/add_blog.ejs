@@ -1,9 +1,11 @@
 <%- include('partials/header.html') %>
-    <h1>Add Blog</h1>
+    <section class="main">
+        <h1>Add Blog</h1>
 
-    <form action="/blog_submit" method="POST">
-        <input type="text" name="title" placeholder="title">
-        <input type="text" name="description" placeholder="description">
-        <input type="submit" value="Submit">
-    </form>
+        <form action="/blog_submit" method="POST">
+            <input type="text" name="title" placeholder="title">
+            <input type="text" name="description" placeholder="description">
+            <input type="submit" value="Submit">
+        </form>
+    </section>
     <%- include('partials/footer.html') %>

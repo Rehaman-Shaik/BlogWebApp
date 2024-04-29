@@ -1,12 +1,14 @@
 <%- include('partials/header.html') %>
-<h1>rehaman</h1>
-    <% if (locals.data) { %>
-        <form action="/delete_blog" method="POST">
-        <h1><%- data.id %> </h1>
-        <p><%- data.title %></p>
-        <p><%- data.description %></p>
-            <input type="hidden" name="id" value="<%= data.id %>">
-            <button type="submit">Delete</button>
-        </form>
-        <% } %>
-            <%- include('partials/footer.html') %>
+    <section class="main">
+        <h1>rehaman</h1>
+        <% if (locals.data) { %>
+            <form action="/delete_blog" method="POST">
+                <h1><%- data.id %> </h1>
+                <p><%- data.title %></p>
+                <p><%- data.description %></p>
+                <input type="hidden" name="id" value="<%= data.id %>">
+                <button type="submit">Delete</button>
+            </form>
+            <% } %>
+    </section>
+    <%- include('partials/footer.html') %>

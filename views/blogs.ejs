@@ -1,19 +1,21 @@
 <%- include('partials/header.html') %>
-    <h1>All blogs</h1>
-    <br>
-    <% if (locals.list) { %>
-        <% list.forEach(item=> { %>
-            <form action="/blog" method="POST">
-                <input type="hidden" name="id" value="<%= item.id %>">
-                <p>
-                    <%= item.title %>
-                </p>
-                <p>
-                    <%= item.description %>
-                </p>
-                <button type="submit">View Blog</button>
-            </form>
-            <br>
-            <hr>
-            <% }) }%>
-                <%- include('partials/footer.html') %>
+    <section class="main">
+        <h1>All blogs</h1>
+        <br>
+        <% if (locals.list) { %>
+            <% list.forEach(item=> { %>
+                <form action="/blog" method="POST">
+                    <input type="hidden" name="id" value="<%= item.id %>">
+                    <p>
+                        <%= item.title %>
+                    </p>
+                    <p>
+                        <%= item.description %>
+                    </p>
+                    <button type="submit">View Blog</button>
+                </form>
+                <br>
+                <hr>
+                <% }) }%>
+    </section>
+    <%- include('partials/footer.html') %>
