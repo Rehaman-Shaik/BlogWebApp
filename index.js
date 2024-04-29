@@ -1,24 +1,39 @@
-import fs from 'fs/promises';
+import fs, { writeFile } from 'fs/promises';
 import bodyParser from "body-parser";
 import express from "express";
 
+
+//variables 
 const app = express();
 const port = 3000
 
 
+//functions
 async function readfile() {
     try {
         const data = await fs.readFile('blogs.json', 'utf8');
         return JSON.parse(data);
     } catch (err) {
         console.error('Error:', err);
-        throw err; // Re-throw the error to handle it outside
     }
 }
+
+
+async function writefile(dataList){
+    try{
+        const jsonData = JSON.stringify(dataList,null,2);
+        await writeFile('blogs.json', jsonData, 'utf8');
+    } catch(err){
+        console.log('Error writing to file:', err)
+    }
+}
+
 
 app.use(express.static("public"))
 app.use(bodyParser.urlencoded({ extended: true }));
 
+
+// routes
 app.listen(port, () => {
     console.log(`Server Started on port ${port}`)
 })
@@ -43,14 +58,7 @@ app.post("/blog_submit", (req, res) => {
                     description: req.body["description"]
                 }
                 dataList.push(new_data)
-                const jsonData = JSON.stringify(dataList, null, 2);
-                fs.writeFile('blogs.json', jsonData, 'utf8', (err) => {
-                    if (err) {
-                        console.error('Error writing to file:', err);
-                    } else {
-                        console.log('Data written to file successfully!');
-                    }
-                });
+                writefile(dataList);
                 res.redirect("/")
             } else {
                 const dataList = []
@@ -60,21 +68,10 @@ app.post("/blog_submit", (req, res) => {
                     description: req.body["description"]
                 }
                 dataList.push(new_data)
-                const jsonData = JSON.stringify(dataList, null, 2);
-                fs.writeFile('blogs.json', jsonData, 'utf8', (err) => {
-                    if (err) {
-                        console.error('Error writing to file:', err);
-                    } else {
-                        console.log('Data written to file successfully!');
-                    }
-                });
+                writefile(dataList);
                 res.redirect("/")
             }
         })
-        .catch(err => {
-            // Handle error
-            console.error('Error:', err);
-        });
 })
 
 app.get("/blogs", (req, res) => {
@@ -84,10 +81,6 @@ app.get("/blogs", (req, res) => {
                 list: dataList
             })
         })
-        .catch(err => {
-            // Handle error
-            console.error('Error:', err);
-        });
 })
 
 app.get("/about", (req, res) => {
@@ -103,10 +96,6 @@ app.post("/blog", (req, res) => {
                 data: dict
             })
         })
-        .catch(err => {
-            // Handle error
-            console.error('Error:', err);
-        });
 })
 
 app.post("/delete_blog", (req, res) => {
@@ -117,14 +106,8 @@ app.post("/delete_blog", (req, res) => {
             dataList.forEach((item, index) => {
                 item.id = index + 1;
             });
-            const jsonData = JSON.stringify(dataList, null, 2);
-            fs.writeFile('blogs.json', jsonData, 'utf8', (err) => {
-                console.log('Data written to file successfully!');
-            });
+            writefile(dataList);
+            
         })
-        .catch(err => {
-            // Handle error
-            console.error('Error:', err);
-        });
     res.redirect("/blogs")
 })
