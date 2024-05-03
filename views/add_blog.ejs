@@ -1,15 +1,20 @@
 <%- include('partials/header.html') %>
     <section class="main">
-        <h1>Add Blog</h1>
-
-        <form action="/blog_submit" method="POST">
-            <input type="text" name="title" placeholder="title">
-            <input type="text" name="description" placeholder="description">
-            <input type="text" name="author" placeholder="author">
-            <input type="text" name="date" placeholder="date">
-            <!--<input type="text" name="author" placeholder="author">
-            <input type="text" name="author" placeholder="author"> -->
-            <input type="submit" value="Submit">
-        </form>
+        <div>
+            <h1>Add Blog</h1>
+            <div class="blog_form">
+                <form action="/blog_submit" method="POST" id="blogform">
+                    <p class="inline">title</p>
+                    <input type="text" name="title" placeholder="title">
+                    <p class="inline" class="" >Author name</p>
+                    <input type="text" name="author" placeholder="author">
+                    <p class="inline">Date</p>
+                    <input type="date" name="date" placeholder="date">
+                    <input type="submit" value="Submit">
+                </form>
+                <p class="margin_left_5px">Description</p>
+                <textarea name="description" form="blogform">Enter text here...</textarea>
+            </div>
+        </div>
     </section>
     <%- include('partials/footer.html') %>
