@@ -1,0 +1,16 @@
+<%- include('partials/header.html') %>
+    <section class="main">
+        <h1>rehaman</h1>
+        <% if (locals.data) { %>
+            <form action="/update_blog" method="POST">
+                <h1><%- data.id %> </h1>
+                <input type="text" name="title" value="<%- data.title %>"> <br>
+                <input type="text" name="description" value="<%- data.description %>"> <br>
+                <input type="text" name="author" value="<%- data.author %>"> <br>
+                <input type="text" name="date" value="<%- data.date %>"> <br>
+                <input type="hidden" name="id" value="<%= data.id %>"> <br>
+                <button type="submit">Update</button>
+            </form>
+            <% } %>
+    </section>
+    <%- include('partials/footer.html') %>

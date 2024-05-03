@@ -9,6 +9,10 @@
                 <input type="hidden" name="id" value="<%= data.id %>">
                 <button type="submit">Delete</button>
             </form>
+            <form action="/update_blog_page" method="POST">
+                <input type="hidden" name="id" value="<%= data.id %>">
+                <button type="submit">Update</button>
+            </form>
             <% } %>
     </section>
     <%- include('partials/footer.html') %>

@@ -53,6 +53,7 @@ app.post("/blog_submit", async  (req, res) => {
             id: dataList.length > 0 ? dataList.length + 1 : 1,
             title: req.body.title,
             description: req.body.description,
+            author : req.body.author,
             date : req.body.date
         };
         dataList.push(new_data);
@@ -73,7 +74,6 @@ app.get("/about", (req, res) => {
 
 app.post("/blog", async (req, res) => {
     let dataList = await readfile("blogs.json")
-    console.log(dataList)
     let index = req.body["id"] - 1
     const dict = dataList[index]
     res.render("blog.ejs", {
@@ -107,7 +107,6 @@ app.get("/signup", (req, res) => {
 
 app.post("/signup_", async (req, res) => {
     let dataList = await readfile('users.json');
-    console.log(dataList)
         const new_data = {
             id: dataList.length > 0 ? dataList.length + 1 : 1,
             username: req.body["username"],
@@ -120,3 +119,30 @@ app.post("/signup_", async (req, res) => {
     await writefile(dataList);
     res.redirect("/home");
 })
+
+app.post("/update_blog_page", async (req, res) => {
+    let dataList = await readfile("blogs.json")
+    let index = req.body["id"] - 1
+    const dict = dataList[index]
+    res.render("update_blog.ejs", {
+        data : dict
+    })
+})
+
+app.post("/update_blog", async (req, res) =>{
+    let newData = {
+        id: req.body.id,
+        title: req.body.title,
+        description: req.body.description,
+        author: req.body.author,
+        date: req.body.date
+      };
+    let dataList = await readfile("blogs.json")
+    let itemToUpdate = dataList.find(item => item.id == req.body.id);
+    if (itemToUpdate) {
+      let obj = Object.assign(itemToUpdate, newData); // Update properties of the dictionarys
+      await writefile(dataList)
+    }
+    writefile(dataList)
+    res.redirect("/blogs")
+}) 
