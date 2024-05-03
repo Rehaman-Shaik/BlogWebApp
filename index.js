@@ -9,9 +9,9 @@ const port = 3000
 
 
 //functions
-async function readfile() {
+async function readfile(filename) {
     try {
-        const data = await fs.readFile('blogs.json', 'utf8');
+        const data = await fs.readFile(filename, 'utf8');
         return JSON.parse(data);
     } catch (err) {
         console.error('Error:', err);
@@ -47,68 +47,47 @@ app.get("/add_blog", (req, res) => {
 })
 
 
-app.post("/blog_submit", (req, res) => {
-    readfile()
-        .then(dataList => {
-            if (dataList.length != 0) {
-                let len = dataList.length + 1
-                const new_data = {
-                    id: len,
-                    title: req.body["title"],
-                    description: req.body["description"]
-                }
-                dataList.push(new_data)
-                writefile(dataList);
-                res.redirect("/")
-            } else {
-                const dataList = []
-                const new_data = {
-                    id: 1,
-                    title: req.body["title"],
-                    description: req.body["description"]
-                }
-                dataList.push(new_data)
-                writefile(dataList);
-                res.redirect("/")
-            }
-        })
+app.post("/blog_submit", async  (req, res) => {
+    let dataList = await readfile('blogs.json');
+        const new_data = {
+            id: dataList.length > 0 ? dataList.length + 1 : 1,
+            title: req.body.title,
+            description: req.body.description
+        };
+        dataList.push(new_data);
+        await writefile(dataList);
+        res.redirect("/");
 })
 
-app.get("/blogs", (req, res) => {
-    readfile()
-        .then(dataList => {
-            res.render("blogs.ejs", {
-                list: dataList
-            })
-        })
+app.get("/blogs", async (req, res) => {
+    let dataList = await readfile("blogs.json")
+    res.render("blogs.ejs", {
+        list: dataList
+    })
 })
 
 app.get("/about", (req, res) => {
     res.render("about.ejs")
 })
 
-app.post("/blog", (req, res) => {
-    readfile()
-        .then(dataList => {
-            let index = req.body["id"] - 1
-            const dict = dataList[index]
-            res.render("blog.ejs", {
-                data: dict
-            })
-        })
+app.post("/blog", async (req, res) => {
+    let dataList = await readfile("blogs.json")
+    console.log(dataList)
+    let index = req.body["id"] - 1
+    const dict = dataList[index]
+    res.render("blog.ejs", {
+        data: dict
+    })
 })
 
-app.post("/delete_blog", (req, res) => {
-    readfile()
-        .then(dataList => {
-            let index = req.body["id"] - 1
-            dataList.splice(index, 1)
-            dataList.forEach((item, index) => {
-                item.id = index + 1;
-            });
-            writefile(dataList);
-
-        })
+app.post("/delete_blog", async (req, res) => {
+    let dataList = await readfile("blogs.json")
+    let index = req.body["id"] - 1
+    dataList.splice(index, 1)
+    dataList.forEach((item, index) => {
+        item.id = index + 1;
+    });
+    writefile(dataList);        
     res.redirect("/blogs")
 })
 
@@ -126,5 +105,15 @@ app.get("/signup", (req, res) => {
 })
 
 app.post("/signup_", (req, res) => {
-    res.render("signup.ejs")
+    const dataList = []
+    const new_data = {
+        id: 1,
+        username: req.body["username"],
+        fname: req.body["fname"],
+        lname: req.body["lname"],
+        email: req.body["email"],
+        password: req.body["password"]
+    }
+    dataList.push(new_data)
+    res.send(dataList)
 })
