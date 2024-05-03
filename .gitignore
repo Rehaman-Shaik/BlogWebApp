@@ -2,3 +2,4 @@ node_modules/
 package.json
 package-lock.json
 /blogs.json
+/users.json
