@@ -1,12 +1,13 @@
 <%- include('partials/header.html') %>
     <section class="main">
-        <form action="/signup_" method="post">
+        <form action="/signup_" method="POST">
             <input type="text" name="username" placeholder="username"> <br>
             <input type="text" name="fname" placeholder="fname"> <br>
             <input type="text" name="lname" placeholder="lname"> <br>
             <input type="text" name="email" placeholder="email"> <br>
             <input type="text" name="password" placeholder="password"> <br>
-            <input type="button" value="Signup">
+            <br>
+            <input type="submit" value="Submit">
         </form>
     </section>
     <%- include('partials/footer.html') %>
