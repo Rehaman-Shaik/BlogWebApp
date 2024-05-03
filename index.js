@@ -52,11 +52,12 @@ app.post("/blog_submit", async  (req, res) => {
         const new_data = {
             id: dataList.length > 0 ? dataList.length + 1 : 1,
             title: req.body.title,
-            description: req.body.description
+            description: req.body.description,
+            date : req.body.date
         };
         dataList.push(new_data);
         await writefile(dataList);
-        res.redirect("/");
+        res.redirect("/home");
 })
 
 app.get("/blogs", async (req, res) => {
@@ -104,9 +105,17 @@ app.get("/signup", (req, res) => {
     res.render("signup.ejs")
 })
 
-app.post("/signup_", (req, res) => {
-    const dataList = []
+app.post("/signup_", async(req, res) => {
+    let dataList = await readfile('blogs.json');
     const new_data = {
+        id: dataList.length > 0 ? dataList.length + 1 : 1,
+        title: req.body.title,
+        description: req.body.description
+    };
+    dataList.push(new_data);
+    await writefile(dataList);
+    res.redirect("/home");
+    const new_data2 = {
         id: 1,
         username: req.body["username"],
         fname: req.body["fname"],
