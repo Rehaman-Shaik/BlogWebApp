@@ -105,24 +105,18 @@ app.get("/signup", (req, res) => {
     res.render("signup.ejs")
 })
 
-app.post("/signup_", async(req, res) => {
-    let dataList = await readfile('blogs.json');
-    const new_data = {
-        id: dataList.length > 0 ? dataList.length + 1 : 1,
-        title: req.body.title,
-        description: req.body.description
-    };
+app.post("/signup_", async (req, res) => {
+    let dataList = await readfile('users.json');
+    console.log(dataList)
+        const new_data = {
+            id: dataList.length > 0 ? dataList.length + 1 : 1,
+            username: req.body["username"],
+            fname: req.body["fname"],
+            lname: req.body["lname"],
+            email: req.body["email"],
+            password: req.body["password"]
+        };
     dataList.push(new_data);
     await writefile(dataList);
     res.redirect("/home");
-    const new_data2 = {
-        id: 1,
-        username: req.body["username"],
-        fname: req.body["fname"],
-        lname: req.body["lname"],
-        email: req.body["email"],
-        password: req.body["password"]
-    }
-    dataList.push(new_data)
-    res.send(dataList)
 })
